@@ -1,0 +1,95 @@
+{
+  "name": "@bun-svelte-pwa/app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "modules/app/src",
+  "projectType": "application",
+  "tags": ["type:app"],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite",
+        "cwd": "modules/app"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite build",
+        "cwd": "modules/app"
+      },
+      "dependsOn": ["^build"]
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite preview",
+        "cwd": "modules/app"
+      },
+      "dependsOn": ["build"]
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "modules/app"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run",
+        "cwd": "modules/app"
+      }
+    },
+    "test:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest",
+        "cwd": "modules/app"
+      }
+    },
+    "test:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest --ui",
+        "cwd": "modules/app"
+      }
+    },
+    "test:e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test",
+        "cwd": "modules/app"
+      }
+    },
+    "test:e2e:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --ui",
+        "cwd": "modules/app"
+      }
+    },
+    "test:e2e:headed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --headed",
+        "cwd": "modules/app"
+      }
+    },
+    "test:e2e:chromium": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --project=chromium",
+        "cwd": "modules/app"
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "rm -rf dist .svelte-kit node_modules/.vite playwright-report test-results",
+        "cwd": "modules/app"
+      }
+    }
+  }
+}

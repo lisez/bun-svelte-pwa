@@ -1,0 +1,23 @@
+{
+  "name": "@bun-svelte-pwa/shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "modules/shared/src",
+  "projectType": "library",
+  "tags": ["type:library"],
+  "targets": {
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "modules/shared"
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "rm -rf dist node_modules/.cache",
+        "cwd": "modules/shared"
+      }
+    }
+  }
+}

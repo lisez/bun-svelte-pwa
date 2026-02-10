@@ -5,7 +5,7 @@ A TypeScript monorepo template for building Progressive Web Apps (PWA) with Svel
 ## Features
 
 - 🚀 **Bun & npm Compatible** - Works with both Bun and npm package managers
-- 📦 **Monorepo Structure** - Organized with workspaces pattern
+- 📦 **Monorepo Structure** - Organized with Nx monorepo tool and workspaces pattern
 - 🎯 **TypeScript** - Full TypeScript support across all modules
 - ⚡ **Svelte** - Reactive and efficient UI framework
 - 📱 **PWA Support** - Offline-first with service workers and manifest
@@ -28,6 +28,7 @@ bun-svelte-pwa/
 │   │   │   └── main.ts
 │   │   ├── tests/       # Playwright tests
 │   │   ├── package.json
+│   │   ├── project.json # Nx project configuration
 │   │   ├── tsconfig.json
 │   │   ├── vite.config.ts
 │   │   ├── tailwind.config.js
@@ -35,7 +36,9 @@ bun-svelte-pwa/
 │   └── shared/          # Shared utilities library
 │       ├── src/
 │       ├── package.json
+│       ├── project.json # Nx project configuration
 │       └── tsconfig.json
+├── nx.json              # Nx workspace configuration
 ├── package.json         # Root package with workspace config
 └── tsconfig.json        # Root TypeScript config
 ```
@@ -119,14 +122,15 @@ bun test
 
 ## Workspace Commands
 
-The monorepo uses workspaces to manage multiple packages. Commands work with both npm and Bun:
+The monorepo uses Nx for efficient task management with caching and dependency handling. Commands work with both npm and Bun:
 
 **With npm:**
 - `npm run dev` - Start development server for the app module
 - `npm run build` - Build the app module for production
 - `npm run preview` - Preview the production build
-- `npm test` - Run Playwright tests
+- `npm test` - Run Vitest tests
 - `npm run test:ui` - Run tests in UI mode
+- `npm run test:e2e` - Run Playwright E2E tests
 - `npm run type-check` - Run TypeScript type checking across all modules
 - `npm run clean` - Clean build artifacts from all modules
 
@@ -134,10 +138,37 @@ The monorepo uses workspaces to manage multiple packages. Commands work with bot
 - `bun dev` - Start development server for the app module
 - `bun run build` - Build the app module for production
 - `bun run preview` - Preview the production build
-- `bun test` - Run Playwright tests
+- `bun test` - Run Vitest tests
 - `bun run test:ui` - Run tests in UI mode
+- `bun run test:e2e` - Run Playwright E2E tests
 - `bun run type-check` - Run TypeScript type checking across all modules
 - `bun run clean` - Clean build artifacts from all modules
+
+### Using Nx Directly
+
+You can also use Nx commands directly for more control:
+
+```bash
+# Run a target for a specific project
+npx nx build @bun-svelte-pwa/app
+npx nx type-check @bun-svelte-pwa/shared
+
+# Run a target for all projects
+npx nx run-many -t build
+npx nx run-many -t type-check
+
+# View project graph
+npx nx graph
+
+# Clear Nx cache
+npx nx reset
+```
+
+**Benefits of Nx:**
+- ⚡ **Smart Caching** - Nx caches task results and only rebuilds what changed
+- 🔗 **Task Dependencies** - Automatically runs dependent tasks in the correct order
+- 📊 **Task Orchestration** - Efficiently runs tasks across multiple projects in parallel
+- 📈 **Project Graph** - Visualize dependencies between projects
 
 ## Adding New Modules
 
@@ -163,7 +194,27 @@ cd modules/your-module
 bun init
 ```
 
-3. The module will automatically be included in the workspace.
+3. Create a `project.json` file in the new module directory to configure Nx targets:
+
+```json
+{
+  "name": "@bun-svelte-pwa/your-module",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "modules/your-module/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc",
+        "cwd": "modules/your-module"
+      }
+    }
+  }
+}
+```
+
+4. The module will automatically be included in the Nx workspace.
 
 ## Tailwind CSS
 
