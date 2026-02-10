@@ -7,11 +7,13 @@
     "modules/*"
   ],
   "scripts": {
-    "dev": "bun --filter app dev",
-    "build": "bun --filter app build",
-    "preview": "bun --filter app preview",
-    "clean": "bun run --filter '*' clean",
-    "type-check": "bun run --filter '*' type-check"
+    "dev": "npm --prefix modules/app run dev",
+    "build": "npm --prefix modules/app run build",
+    "preview": "npm --prefix modules/app run preview",
+    "test": "npm --prefix modules/app run test",
+    "test:ui": "npm --prefix modules/app run test:ui",
+    "clean": "npm run --workspaces clean",
+    "type-check": "npm run --workspaces type-check"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

@@ -5,27 +5,9 @@
   }
 </script>
 
-<button on:click={increment}>
+<button 
+  on:click={increment}
+  class="rounded-lg border border-transparent px-5 py-2.5 text-base font-medium bg-gray-800 dark:bg-gray-900 cursor-pointer transition-colors hover:border-blue-500 focus:outline-4 focus:outline-auto focus:outline-blue-500"
+>
   count is {count}
 </button>
-
-<style>
-  button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-  }
-  button:hover {
-    border-color: #646cff;
-  }
-  button:focus,
-  button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-  }
-</style>

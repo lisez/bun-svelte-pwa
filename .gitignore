@@ -102,6 +102,11 @@ dist
 build/
 dist/
 
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
 # vitepress build output
 **/.vitepress/dist
 

@@ -38,10 +38,18 @@ export function isBrowser(): boolean {
  * Get environment name
  */
 export function getEnvironment(): 'development' | 'production' | 'test' {
-  // @ts-ignore - process may not exist in browser
-  if (typeof process !== 'undefined' && process?.env?.NODE_ENV) {
-    // @ts-ignore
-    return process.env.NODE_ENV as 'development' | 'production' | 'test'
+  // Check if running in Node.js environment
+  const hasProcess = typeof globalThis !== 'undefined' && 
+                     'process' in globalThis && 
+                     globalThis.process !== null &&
+                     typeof globalThis.process === 'object' &&
+                     'env' in globalThis.process;
+  
+  if (hasProcess) {
+    const env = (globalThis.process as { env?: { NODE_ENV?: string } }).env?.NODE_ENV;
+    if (env === 'development' || env === 'production' || env === 'test') {
+      return env;
+    }
   }
   return 'development'
 }

@@ -8,16 +8,25 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist .svelte-kit node_modules/.vite"
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:chromium": "playwright test --project=chromium",
+    "clean": "rm -rf dist .svelte-kit node_modules/.vite playwright-report test-results"
   },
   "dependencies": {
     "@bun-svelte-pwa/shared": "file:../shared",
     "svelte": "^4.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "@tailwindcss/vite": "^4.1.18",
     "@tsconfig/svelte": "^5.0.2",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
     "svelte-check": "^3.6.2",
+    "tailwindcss": "^3.4.19",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",

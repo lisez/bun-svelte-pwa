@@ -4,8 +4,13 @@
   import Counter from './lib/Counter.svelte'
   import { formatDate, getEnvironment } from '@bun-svelte-pwa/shared'
 
+  interface BeforeInstallPromptEvent extends Event {
+    prompt(): Promise<void>
+    userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+  }
+
   let isPWAInstallable = false
-  let deferredPrompt: any
+  let deferredPrompt: BeforeInstallPromptEvent | null = null
   
   const currentDate = formatDate(new Date())
   const environment = getEnvironment()
@@ -19,13 +24,13 @@
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault()
-    deferredPrompt = e
+    deferredPrompt = e as BeforeInstallPromptEvent
     isPWAInstallable = true
   })
 
   const installPWA = async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt()
+      await deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
       deferredPrompt = null
       isPWAInstallable = false
@@ -33,79 +38,36 @@
   }
 </script>
 
-<main>
-  <div>
-    <a href="https://bun.sh" target="_blank" rel="noreferrer">
-      <img src={bunLogo} class="logo bun" alt="Bun Logo" />
+<main class="max-w-5xl mx-auto px-8 py-16 text-center">
+  <div class="flex justify-center gap-8 mb-8">
+    <a href="https://bun.sh" target="_blank" rel="noreferrer" class="transition-transform hover:scale-110">
+      <img src={bunLogo} class="h-24 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#fbf0dfaa]" alt="Bun Logo" />
     </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
+    <a href="https://svelte.dev" target="_blank" rel="noreferrer" class="transition-transform hover:scale-110">
+      <img src={svelteLogo} class="h-24 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#ff3e00aa]" alt="Svelte Logo" />
     </a>
   </div>
-  <h1>Bun + Svelte PWA</h1>
-  <p class="subtitle">TypeScript Monorepo Template</p>
-  <p class="info">Environment: {environment} | {currentDate}</p>
+  
+  <h1 class="text-5xl font-bold leading-tight mb-2">Bun + Svelte PWA</h1>
+  <p class="text-xl text-gray-400 mb-2">TypeScript Monorepo Template</p>
+  <p class="text-sm text-gray-500 mb-8">Environment: {environment} | {currentDate}</p>
 
-  <div class="card">
+  <div class="py-8">
     <Counter />
   </div>
 
   {#if isPWAInstallable}
-    <div class="install-pwa">
-      <button on:click={installPWA}>
+    <div class="my-8">
+      <button 
+        on:click={installPWA}
+        class="text-lg px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg text-white cursor-pointer transition-transform hover:scale-105 border-none"
+      >
         📱 Install as App
       </button>
     </div>
   {/if}
 
-  <p class="read-the-docs">
+  <p class="text-gray-400 mt-8">
     Click on the Bun and Svelte logos to learn more
   </p>
 </main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .logo.bun:hover {
-    filter: drop-shadow(0 0 2em #fbf0dfaa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-  .subtitle {
-    font-size: 1.2em;
-    color: #888;
-    margin: -1em 0 0.5em 0;
-  }
-  .info {
-    font-size: 0.9em;
-    color: #666;
-    margin: 0 0 2em 0;
-  }
-  .install-pwa {
-    margin: 2em 0;
-  }
-  .install-pwa button {
-    font-size: 1.1em;
-    padding: 0.8em 1.5em;
-    background: linear-gradient(135deg, #ff3e00 0%, #ff8a00 100%);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .install-pwa button:hover {
-    transform: scale(1.05);
-  }
-</style>
