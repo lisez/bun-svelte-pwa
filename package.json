@@ -11,7 +11,10 @@
     "build": "cd modules/app && npm run build",
     "preview": "cd modules/app && npm run preview",
     "test": "cd modules/app && npm run test",
+    "test:watch": "cd modules/app && npm run test:watch",
     "test:ui": "cd modules/app && npm run test:ui",
+    "test:e2e": "cd modules/app && npm run test:e2e",
+    "test:e2e:ui": "cd modules/app && npm run test:e2e:ui",
     "clean": "npm run --workspaces --if-present clean",
     "type-check": "npm run --workspaces --if-present type-check"
   },
