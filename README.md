@@ -231,7 +231,44 @@ Example:
 </button>
 ```
 
-## Testing with Playwright
+## Testing
+
+The project includes two types of tests:
+
+### Unit Tests (Vitest)
+
+Unit tests are located in `modules/app/src/**/*.test.ts` and use:
+- **Vitest** - Fast unit test framework
+- **@testing-library/svelte** - Testing utilities for Svelte components
+- **jsdom** - DOM implementation for Node.js/npm
+- **Happy DOM** - DOM implementation for Bun
+
+**Running unit tests:**
+
+With npm:
+```bash
+npm test              # Run tests once
+npm run test:watch    # Run in watch mode
+npm run test:ui       # Run with UI
+```
+
+With Bun:
+```bash
+bun test              # Run tests once
+bun run test:watch    # Run in watch mode
+bun run test:ui       # Run with UI
+```
+
+**Bun-specific setup:**
+
+When running tests with Bun's test runner, the project uses:
+- `happydom.ts` - Registers Happy DOM to provide browser APIs like `document` and `window`
+- `svelte-loader.ts` - Compiles `.svelte` files for the Bun test runner
+- `bunfig.toml` - Configures Bun to preload these files before running tests
+
+This ensures tests work identically with both npm/vitest and Bun's native test runner.
+
+### End-to-End Tests (Playwright)
 
 Playwright is configured for end-to-end testing:
 
@@ -239,14 +276,14 @@ Playwright is configured for end-to-end testing:
 - **Tests Location**: `modules/app/tests/`
 
 **With npm:**
-- `npm test` - Run all tests
-- `npm run test:ui` - Run tests in UI mode
-- `npm run test:headed` - Run tests in headed mode
+- `npm run test:e2e` - Run E2E tests
+- `npm run test:e2e:ui` - Run E2E tests in UI mode
+- `npm run test:e2e:headed` - Run E2E tests in headed mode
 
 **With Bun:**
-- `bun test` - Run all tests
-- `bun run test:ui` - Run tests in UI mode
-- `bun run test:headed` - Run tests in headed mode
+- `bun run test:e2e` - Run E2E tests
+- `bun run test:e2e:ui` - Run E2E tests in UI mode
+- `bun run test:e2e:headed` - Run E2E tests in headed mode
 
 Example test:
 ```typescript

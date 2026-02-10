@@ -19,6 +19,7 @@
     "type-check": "nx run-many -t type-check"
   },
   "devDependencies": {
+    "@happy-dom/global-registrator": "^20.6.0",
     "@nx/workspace": "^22.5.0",
     "nx": "^22.5.0",
     "typescript": "^5.3.3"
