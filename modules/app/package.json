@@ -8,10 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "playwright test",
-    "test:ui": "playwright test --ui",
-    "test:headed": "playwright test --headed",
-    "test:chromium": "playwright test --project=chromium",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:chromium": "playwright test --project=chromium",
     "clean": "rm -rf dist .svelte-kit node_modules/.vite playwright-report test-results"
   },
   "dependencies": {
@@ -22,8 +25,12 @@
     "@playwright/test": "^1.58.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tailwindcss/vite": "^4.1.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/svelte": "^5.3.1",
     "@tsconfig/svelte": "^5.0.2",
+    "@vitest/ui": "^4.0.18",
     "autoprefixer": "^10.4.24",
+    "jsdom": "^28.0.0",
     "postcss": "^8.5.6",
     "svelte-check": "^3.6.2",
     "tailwindcss": "^3.4.19",
@@ -31,6 +38,7 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
     "vite-plugin-pwa": "^0.17.4",
+    "vitest": "^4.0.18",
     "workbox-window": "^7.0.0"
   }
 }

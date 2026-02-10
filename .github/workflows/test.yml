@@ -1,0 +1,67 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    strategy:
+      matrix:
+        runtime:
+          - name: 'Node.js 24'
+            type: 'node'
+            version: '24'
+          - name: 'Bun'
+            type: 'bun'
+            version: 'latest'
+    
+    name: Test with ${{ matrix.runtime.name }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      if: matrix.runtime.type == 'node'
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.runtime.version }}
+        cache: 'npm'
+    
+    - name: Setup Bun
+      if: matrix.runtime.type == 'bun'
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ matrix.runtime.version }}
+        
+    - name: Install dependencies (npm)
+      if: matrix.runtime.type == 'node'
+      run: npm install
+    
+    - name: Install dependencies (bun)
+      if: matrix.runtime.type == 'bun'
+      run: bun install
+      
+    - name: Run type check (npm)
+      if: matrix.runtime.type == 'node'
+      run: npm run type-check
+    
+    - name: Run type check (bun)
+      if: matrix.runtime.type == 'bun'
+      run: bun run type-check
+      
+    - name: Run unit tests (npm)
+      if: matrix.runtime.type == 'node'
+      run: npm test
+    
+    - name: Run unit tests (bun)
+      if: matrix.runtime.type == 'bun'
+      run: bun test
