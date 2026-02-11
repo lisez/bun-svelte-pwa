@@ -1,17 +1,11 @@
 <script lang="ts">
   import '../app.css'
-  import type { Snippet } from 'svelte'
+  import { setContext } from 'svelte'
 
   interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>
     userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
   }
-
-  interface Props {
-    children: Snippet<[{ isPWAInstallable: boolean, installPWA: () => Promise<void> }]>
-  }
-
-  let { children }: Props = $props()
 
   let isPWAInstallable = $state(false)
   let deferredPrompt: BeforeInstallPromptEvent | null = $state(null)
@@ -39,6 +33,12 @@
       isPWAInstallable = false
     }
   }
+
+  // Provide PWA context to child components
+  setContext('pwa', {
+    get isPWAInstallable() { return isPWAInstallable },
+    installPWA
+  })
 </script>
 
 <svelte:head>
@@ -48,5 +48,6 @@
   <title>Bun Svelte PWA</title>
 </svelte:head>
 
-{@render children({ isPWAInstallable, installPWA })}
+<slot />
+
 

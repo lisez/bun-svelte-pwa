@@ -3,13 +3,14 @@
   import bunLogo from '$lib/assets/bun.svg'
   import Counter from '$lib/Counter.svelte'
   import { formatDate, getEnvironment } from '@bun-svelte-pwa/shared'
+  import { getContext } from 'svelte'
 
-  interface Props {
+  interface PWAContext {
     isPWAInstallable: boolean
     installPWA: () => Promise<void>
   }
 
-  let { isPWAInstallable, installPWA }: Props = $props()
+  const pwa = getContext<PWAContext>('pwa')
   
   const currentDate = formatDate(new Date())
   const environment = getEnvironment()
@@ -33,10 +34,10 @@
     <Counter />
   </div>
 
-  {#if isPWAInstallable}
+  {#if pwa.isPWAInstallable}
     <div class="my-8">
       <button 
-        onclick={installPWA}
+        onclick={pwa.installPWA}
         class="text-lg px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-500 rounded-lg text-white cursor-pointer transition-transform hover:scale-105 border-none"
       >
         📱 Install as App
